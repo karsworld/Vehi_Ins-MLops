@@ -55,10 +55,3 @@ for filepath in list_of_files:
             pass
     else:
         print(f"file is already present at: {filepath}")
-
-
-
-#karunap232
-#ShKqHsx0VocahTot
-#pBBzX1XWSweYFoZW
-#mongodb+srv://karunap232:pBBzX1XWSweYFoZW@cluster0.1qoo6.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
