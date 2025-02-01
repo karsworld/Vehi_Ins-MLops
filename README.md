@@ -1,8 +1,11 @@
 
-```markdown
+---
+
 # 🚗 **Vehicle Project**
 
-Welcome to the **Vehicle Project** repository! This project demonstrates a complete end-to-end machine learning pipeline, from data ingestion to model deployment with CI/CD integration. It covers MongoDB setup, AWS configuration, data processing, model evaluation, and much more.
+Welcome to the **Vehicle Project**! This repository demonstrates an end-to-end machine learning pipeline that incorporates **data ingestion**, **data validation**, **model training**, and **CI/CD integration** for automated deployments.
+
+This guide will help you get started with setting up and running the project on your local machine or cloud environment. 
 
 ---
 
@@ -16,227 +19,206 @@ Welcome to the **Vehicle Project** repository! This project demonstrates a compl
 6. [AWS Services Setup](#aws-services-setup)
 7. [Model Evaluation & Pusher](#model-evaluation--pusher)
 8. [Prediction Pipeline](#prediction-pipeline)
-9. [CI/CD Setup](#ci-cd-setup)
+9. [CI/CD Setup](#cicd-setup)
 10. [Additional Setup](#additional-setup)
 
 ---
 
 ## 🛠️ Project Setup
 
-### 1. Create Project Template
-- Run the `template.py` script to initialize the project structure.
+### 1. **Create Project Template**
+- Run the `template.py` script to generate the project structure.
 
-### 2. Set Up `setup.py` and `pyproject.toml`
-- Edit the `setup.py` and `pyproject.toml` files to import local packages.
-- Refer to the `crashcourse.txt` for detailed setup instructions.
+### 2. **Configure `setup.py` & `pyproject.toml`**
+- Edit `setup.py` and `pyproject.toml` to import local packages as described in `crashcourse.txt`.
 
-### 3. Create Virtual Environment & Install Dependencies
+### 3. **Set Up Virtual Environment & Install Dependencies**
+1. Create and activate a virtual environment:
 
 ```bash
 conda create -n vehicle python=3.10 -y
 conda activate vehicle
 ```
 
-- Add required packages to `requirements.txt` and install:
+2. Install the required dependencies from `requirements.txt`:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Verify Package Installation
+3. Check installed packages:
 
-- Run `pip list` to confirm that all required packages are installed.
+```bash
+pip list
+```
 
 ---
 
 ## 🗄️ MongoDB Setup
 
-### 5. Create MongoDB Atlas Account
-1. Sign up for MongoDB Atlas and create a new project.
-2. Create a new cluster with the "M0" service tier.
-3. Set up a username, password, and DB user.
+### 4. **Sign Up for MongoDB Atlas**
+- Create a MongoDB Atlas account and set up a new project.
+- Deploy a new cluster with the M0 service tier.
 
-### 6. Set Up IP Access
+### 5. **Create Database User & Access**
+- Create a database user with a username and password.
+- In the "Network Access" section, add `0.0.0.0/0` to allow connections from anywhere.
 
-- Add `0.0.0.0/0` in "Network Access" to allow universal access.
+### 6. **Get Connection String**
+- Navigate to "Project > Cluster" and get the connection string. Replace the placeholder password with your own.
 
-### 7. Get Connection String
+### 7. **Set Up Jupyter Notebook**
+- Create a `notebook` folder and add a `mongoDB_demo.ipynb` notebook.
+- Push the dataset to MongoDB from within the notebook.
 
-- Copy the connection string from MongoDB Atlas and replace the password.
-
-### 8. Set Up Notebooks
-
-1. Create a folder called `notebook` and add the `mongoDB_demo.ipynb` file.
-2. Push your dataset to MongoDB through the notebook.
-
-### 9. Verify MongoDB Data
-
-- Browse your MongoDB Atlas database to see the data in a key-value format.
+### 8. **Verify MongoDB Data**
+- Browse your collection on MongoDB Atlas and verify your data is in key-value format.
 
 ---
 
-## 🧑‍💻 Logging, Exception Handling, and Notebooks
+## 🔧 Logging, Exception Handling, and Notebooks
 
-### 10. Logger & Exception Handling
+### 9. **Logger & Exception Handling**
+- Write a `logger.py` file for logging and an `exception.py` file for handling errors.
+- Test both in the `demo.py` script.
 
-- Implement custom logging in the `logger.py` file and test it with `demo.py`.
-- Handle exceptions in the `exception.py` file and test them.
-
-### 11. Exploratory Data Analysis (EDA) & Feature Engineering
-
-- Add EDA and feature engineering notebooks to analyze and prepare the data.
+### 10. **EDA & Feature Engineering**
+- Create and add notebooks for **Exploratory Data Analysis (EDA)** and **Feature Engineering**.
 
 ---
 
 ## 💾 Data Ingestion
 
-### 12. Set Up MongoDB Connection
+### 11. **Set Up Data Ingestion**
+1. Define constants in `constants/__init__.py`.
+2. Implement the MongoDB connection function in `configuration.mongo_db_connections.py`.
+3. Fetch data from MongoDB in the `data_access` folder and transform it into a dataframe.
 
-1. Define constants in `constants.__init__.py`.
-2. Implement MongoDB connection in `configuration.mongo_db_connections.py`.
-3. Create code in `data_access` and `entity` folders to handle data ingestion and transformation.
-
-### 13. Configure MongoDB URL
-
-For **Bash**:
+### 12. **Configure MongoDB URL**
+- On **Mac/Linux**, set the MongoDB connection URL in the terminal:
 
 ```bash
 export MONGODB_URL="mongodb+srv://<username>:<password>......"
 ```
 
-For **PowerShell**:
-
-```bash
-$env:MONGODB_URL = "mongodb+srv://<username>:<password>......"
-```
+- On **Windows**, set it through the Environment Variables UI or terminal.
 
 ---
 
-## 🔎 Data Validation, Transformation & Model Trainer
+## 🔍 Data Validation, Transformation & Model Trainer
 
-### 14. Data Validation
+### 13. **Data Validation**
+- Complete the implementation of the **Data Validation** component by referencing the `utils.main_utils.py` and `config.schema.yaml` files.
 
-- Add code to validate the data as done in the Data Ingestion step.
+### 14. **Data Transformation**
+- Implement the **Data Transformation** component and add the `estimator.py` file to the `entity` folder.
 
-### 15. Data Transformation
-
-- Implement the Data Transformation component. Add `estimator.py` to the `entity` folder.
-
-### 16. Model Trainer
-
-- Implement the Model Trainer component to train your model and store the results.
+### 15. **Model Trainer**
+- Add the model training logic to the `estimator.py` file and implement the **Model Trainer** component.
 
 ---
 
 ## ☁️ AWS Services Setup
 
-### 17. Set Up AWS IAM
+### 16. **Set Up AWS IAM User**
+1. Log in to the AWS Console and create a new IAM user named `firstproj`.
+2. Attach the `AdministratorAccess` policy and download the **Access Keys** CSV.
 
-1. Create an AWS IAM user with `AdministratorAccess` policy.
-2. Generate the Access Keys and set them as environment variables:
+### 17. **Set Environment Variables**
+1. Set the environment variables in your terminal:
 
 ```bash
 export AWS_ACCESS_KEY_ID="your-access-key-id"
 export AWS_SECRET_ACCESS_KEY="your-secret-access-key"
 ```
 
-### 18. AWS S3 Bucket Configuration
+2. Verify with:
 
-1. Create a new S3 bucket named `my-model-mlopsproj`.
-2. Allow public access and acknowledge.
+```bash
+echo $AWS_ACCESS_KEY_ID
+```
+
+### 18. **Create S3 Bucket**
+- Create an S3 bucket named `my-model-mlopsproj` in **us-east-1** region and ensure public access is enabled.
+
+### 19. **Configure AWS S3 in Project**
+- Implement code to interact with AWS S3 for storing models and other artifacts.
 
 ---
 
 ## 🏆 Model Evaluation & Pusher
 
-### 19. Model Evaluation
+### 20. **Model Evaluation**
+- Implement logic to evaluate model performance based on a predefined threshold.
 
-- Implement the model evaluation step to assess the performance of your trained model.
-
-### 20. Model Pusher
-
-- Push the trained model to AWS S3 for storage and further use.
+### 21. **Model Pusher**
+- Set up functionality to push the trained model to an S3 bucket for deployment.
 
 ---
 
 ## 🚀 Prediction Pipeline
 
-### 21. Set Up Prediction Pipeline
-
-- Set up `app.py` for the prediction pipeline.
-- Create directories like `static` and `templates` to serve the model predictions through a web interface.
+### 22. **Set Up Prediction Pipeline**
+1. Develop the prediction pipeline in `app.py`.
+2. Create `static` and `templates` directories to build the frontend for serving predictions.
 
 ---
 
 ## 🔄 CI/CD Setup
 
-### 22. Docker & GitHub Actions Setup
+### 23. **Docker & GitHub Actions Setup**
+1. Set up the `Dockerfile` and `.dockerignore`.
+2. Create GitHub Actions workflows under `.github/workflows/aws.yaml` to automate the CI/CD pipeline.
+3. Set up **AWS ECR** to store Docker images and configure a self-hosted runner on **EC2**.
 
-1. Create a `Dockerfile` and `.dockerignore`.
-2. Set up GitHub Actions for CI/CD by creating `.github/workflows/aws.yaml`.
-3. Create an ECR repository for storing your Docker image.
+### 24. **EC2 Setup & Docker Installation**
+1. Launch an **EC2 instance** with Ubuntu.
+2. Install **Docker** on the EC2 machine:
 
-### 23. EC2 Setup
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker ubuntu
+newgrp docker
+```
 
-1. Launch an EC2 Ubuntu instance and install Docker.
-2. Connect to the instance and set up a self-hosted GitHub runner.
+### 25. **Connect GitHub to EC2**
+- Set up a self-hosted GitHub Actions runner on your EC2 instance by following the on-screen instructions.
 
-### 24. EC2 Security Group
-
-- Open port `5000` for the EC2 instance to allow access to the prediction app.
-
----
-
-## ⚙️ Additional Setup
-
-### 25. GitHub Secrets Setup
-
-Add the following secrets in GitHub under `Settings > Secrets and Variables > Actions`:
-
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_DEFAULT_REGION`
-- `ECR_REPO`
-
-### 26. Access the Prediction App
-
-- After deploying the app, access it through `http://<public-ip>:5000`.
+### 26. **Activate EC2 Port 5000**
+- Edit security groups to allow inbound traffic on **port 5000** for your application.
 
 ---
 
-## 💡 Conclusion
+## 🔧 Additional Setup
 
-This **Vehicle Project** is a complete pipeline that demonstrates best practices for deploying machine learning models with MongoDB, AWS, Docker, and CI/CD. By following this setup, you will gain hands-on experience with data engineering, model training, cloud services, and automated deployment.
+### 27. **Set Up GitHub Secrets**
+- Go to **GitHub > Settings > Secrets and Variables** and add the following secrets:
+  - `AWS_ACCESS_KEY_ID`
+  - `AWS_SECRET_ACCESS_KEY`
+  - `AWS_DEFAULT_REGION`
+  - `ECR_REPO`
+
+### 28. **Access the Prediction App**
+- Once deployed, access the prediction app via the **EC2 public IP**: `http://<public-ip>:5000`.
 
 ---
 
-## 🚀 Contributions
+## 📈 Conclusion
 
-Feel free to fork this repository, contribute, or suggest improvements. Happy coding! ✨
+The **Vehicle Project** provides a comprehensive example of a complete machine learning pipeline with end-to-end deployment. You’ve successfully implemented data ingestion, validation, transformation, model training, and deployment with CI/CD using **MongoDB**, **AWS**, **Docker**, and **GitHub Actions**.
 
 ---
 
-## 📱 Social Links
+## 📝 Contributions
+
+Feel free to fork, improve, and submit issues or pull requests. Contributions are welcome!
+
+---
+
+## 📱 Connect with Me
 
 - [GitHub](https://github.com/karsworld)
 - [LinkedIn](https://www.linkedin.com/in/karuna-prasanthi-kp/)
 
 ---
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Made%20With%20❤️%20By%20YourName-blue" alt="Made with love"/>
-</p>
-```
-
----
-
-### Key Highlights of the ReadMe:
-
-- **Badges**: These add a professional touch and allow recruiters to quickly see relevant details.
-- **Well-Structured Table of Contents**: Visitors can easily navigate through the document.
-- **Headings & Subheadings**: Each step is clearly defined with concise explanations.
-- **Code Snippets**: Clear, executable instructions and commands.
-- **Conclusion & Contribution**: A call to action for further engagement and contributions.
-- **Social Links**: Showcase your personal or professional profiles for networking.
-
-This enhanced version will surely leave a great impression!
