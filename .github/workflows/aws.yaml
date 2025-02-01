@@ -32,7 +32,8 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .  
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          name=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo $name
 
   Continuous-Deployment:
     needs: Continuous-Integration
